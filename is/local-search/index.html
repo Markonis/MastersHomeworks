@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Lokalno Trazenje</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="experiment.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Lokalno Trazenje</h1>
+      <p>Ovaj program pronalazi parametre kosog hica za zadatu udaljenost mete metodom <em>hill climbing</em>.</p>
+      <ul>
+        <li>Ugao</li>
+        <li>Polaznu brzinu</li>
+      </ul>
+      <img src="cannon.jpg" width="300"></img>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>Eksperiment</h3>
+        </div>
+        <div class="panel-body">
+          <form class="form">
+            <p>Program se sam zaustavlja kada dodje u lokalni minimum greske ili kada dostigne maksimalni broj iteracija.</p>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="distance">Udaljenost mete</label>
+                  <input id="distance" type="number" name="distance" class="form-control" value="100" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="iterations">Maksimalni broj iteracija</label>
+                  <input id="iterations" type="number" name="iterations" class="form-control" value="100" />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div id="start" class="btn btn-primary">Pokreni eksperiment</div>
+            </div>
+            <h4>Rezultati</h4>
+            <table id="results" class="table table-condensed table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Ugao (rad)</th>
+                  <th>Brzina (m/s)</th>
+                  <th>Greska (m)</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      /* global $ Experiment */
+      $(function () {
+        function clearResults() {
+          $('#results tbody tr').remove();
+        }
+
+        function drawIteration(state) {
+          var row = $('<tr>');
+          row.append($('<td>').text(state.angle));
+          row.append($('<td>').text(state.speed));
+          row.append($('<td>').text(state.error));
+          $('#results > tbody').append(row);
+        }
+
+        function startExperiment() {
+          var targetDistance = parseFloat($('#distance').val());
+          var maxIterations = parseInt($('#iterations').val());
+          var experiment = new Experiment({
+            targetDistance: targetDistance,
+            gravity: 9.81,
+            maxIterations: maxIterations,
+            callback: drawIteration
+          });
+          experiment.run();
+        }
+
+        $('#start').click(function () {
+          clearResults();
+          startExperiment();
+        });
+      });
+    </script>
+  </body>
+
+</html>

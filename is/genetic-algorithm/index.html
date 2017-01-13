@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Genetski Algoritam</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="rubik.js"></script>
+    <script type="text/javascript" src="ga.js"></script>
+    <script type="text/javascript" src="experiment.js"></script>
+  </head>
+
+  <body style="padding-bottom: 100px">
+    <div class="container">
+      <h1>Genetski Algoritam</h1>
+
+      <p>Ovaj program pokusava da resi Rubikovu kocku pomocu genetskog algoritma. Jedan hromozom predstavlja niz rotacija koje treba uraditi da bi se kocka resila. Rotacije su date u obliku:</p>
+
+      <ul>
+        <li>Osa rotacije (x, y, z)</li>
+        <li>Indeks sloja koji se rotira</li>
+      </ul>
+
+      <p>Nakon svake iteracije, bira se odredjeni broj <em>elitnih jedinica</em>, koje se direktno prebacuju u narednu generaciju. Ostale jedinke se generisu putem razmnozavanja, gde jedna jedinka nastaje rekombinovanjem gena dva roditelja:</p>
+
+      <ol>
+        <li>Nalazi se <em>cross-over</em> tacka</li>
+        <li>Ukrstaju se hromozomi</li>
+        <li>Primenjuju se mutacije gena sa relativno malom verovatnocom nastanka mutacije.</li>
+      </ol>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <p>Roditelji se biraju prema <em>fittness</em> funkciji. Jedinke sa vecim <em>fittness-om</em> imaju vece sanse da postanu roditelji. Tezinski slucajni odabir se radi prema funkciji:</p>
+
+          <pre>i = ceil((1 - x^4))*(n - 1)</pre>
+
+          <p>Gde je <var>i</var> indeks u nizu jedinki sortiranih po <em>fitness</em> funkciji, <var>x</var> je slucajno izabrani broj od 0 do 1, a <var>n</var> je broj svih jediniki.</p>
+        </div>
+        <div class="text-center col-sm-6">
+          <iframe src="https://www.desmos.com/calculator/ctcbqfz05l?embed" width="100%" height="300px" style="border: 1px solid #ccc" frameBorder="0"></iframe>
+        </div>
+      </div>
+
+      <hr>
+
+      <h2>Experiment</h2>
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th>Generacija</th>
+            <th>Greska (broj pogresno rasporedjenih kockica)</th>
+          </tr>
+        </thead>
+        <tbody id="results"> </tbody>
+      </table>
+      <div class="row">
+        <div class="col-sm-6">
+          <p>Klikom na dugme Start pokrece se trazenje resenja (u 300 iteracija). U tabeli se ispisuje red za svakih 10 iteracija.</p>
+
+        </div>
+        <div class="col-sm-6">
+          <div id="start" class="btn btn-primary btn-lg btn-block">Start</div>
+        </div>
+
+      </div>
+
+    </div>
+  </body>
+
+</html>

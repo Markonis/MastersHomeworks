@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Generator Teksta</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="experiment.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Generator Teksta</h1>
+      <p>Ovaj program generise nastavak teksta, bazirano na Lancu Markova.</p>
+      <h2>Model</h2>
+      <p>Ovde treba uneti tekst koji ce sluziti za statisticku analizu.</p>
+      <div class="form-group">
+        <textarea id="text" rows="5" class="form-control" placeholder="Originalni tekst..."></textarea>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <input class="form-control" id="size" type="number" placeholder="Maksimalna duzina lanca" value="4" />
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <button id="generate" class="btn btn-primary btn-block">Generisi Model</button>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div id="experiment" style="display: none">
+        <h2>Eksperiment</h2>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="input">Pocetak</label>
+              <input class="form-control" id="input" type="text" placeholder="Pocetak..." />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="result-size">Broj reci koje treba generisati</label>
+              <input class="form-control" id="result-size" type="number" value="10" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="result">Generisani tekst</label>
+          <textarea class="form-control" rows="5" id="result" placeholder="Rezultat..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore-contrib/0.3.0/underscore-contrib.min.js"></script>
+    <script type="text/javascript" src="generator.js"></script>
+    <script type="text/javascript">
+      /* global $ _ Generator */
+      $(function () {
+        var generator = null;
+
+        $('#generate').click(function () {
+          var text = $('#text').val().trim();
+          if (_.isEmpty(text)) {
+            alert('Molimo unesite neki tekst!');
+          }
+          else {
+            generator = new Generator({
+              size: parseInt($('#size').val()),
+              text: text
+            });
+            $('#experiment').show();
+          }
+        });
+
+        $('#input').keyup(function () {
+          if (generator != null) {
+            var input = $(this).val();
+            var resultSize = parseInt($('#result-size').val());
+            var result = generator.generateNextWords(input, resultSize);
+            $('#result').val(result);
+          }
+        });
+      });
+    </script>
+  </body>
+
+</html>
